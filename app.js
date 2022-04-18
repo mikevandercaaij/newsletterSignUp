@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const https = require("https");
+const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
 
 const app = express();
 
@@ -30,11 +31,11 @@ app.post("/", (req, res) => {
     };
     const jsonData = JSON.stringify(data);
 
-    const url = "https://us14.api.mailchimp.com/3.0/lists/cdc7c61ec3";
+    const url = "https://us14.api.mailchimp.com/3.0/lists/" + process.env["LIST_ID"];
 
     const options = {
         method: "POST",
-        auth: "mvdc2000:af2a95edf3dc3eee8574b40c9646aaec-us14",
+        auth: "mvdc2000:" + process.env["API_TOKEN"],
     };
 
     const request = https.request(url, options, (response) => {
@@ -60,11 +61,5 @@ app.post("/failure", (req, res) => {
 });
 
 app.listen(process.env.PORT || 3000, () => {
-    console.log("Server is running on port" + process.env.PORT + ".");
+    console.log("Server is running.");
 });
-
-//API KEY
-//af2a95edf3dc3eee8574b40c9646aaec-us14
-
-//LIST ID
-//cdc7c61ec3
